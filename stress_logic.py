@@ -1,21 +1,74 @@
 # stress_logic.py
-def calculate_stress(sleep_hours, work_hours, exercise_hours):
+
+def calculate_stress(sleep, work, exercise, diet, screen, caffeine, self_stress):
     """
-    Simple logic to calculate stress score (0–100).
-    Lower sleep, higher work, less exercise → higher stress.
+    Calculate stress score (0–100) and level based on lifestyle factors.
+    Returns (level, score, suggestions).
     """
 
-    stress_score = (10 - sleep_hours) * 5 + (work_hours * 3) - (exercise_hours * 2)
+    score = 0
 
-    # Keep score between 0 and 100
-    stress_score = max(0, min(100, stress_score))
+    # Sleep
+    if sleep < 6:
+        score += 20
+    elif sleep > 9:
+        score += 5
 
-    # Categories
-    if stress_score < 40:
+    # Work/Study hours
+    if work > 10:
+        score += 20
+    elif work < 4:
+        score += 5
+
+    # Exercise
+    if exercise < 1:
+        score += 15
+    elif exercise >= 2:
+        score -= 5
+
+    # Diet (1=poor, 5=excellent)
+    score += (6 - diet) * 3  
+
+    # Screen time
+    if screen > 8:
+        score += 15
+    elif screen < 4:
+        score -= 5
+
+    # Caffeine
+    if caffeine > 4:
+        score += 10
+
+    # Self-reported stress
+    score += self_stress * 5
+
+    # Clamp score
+    score = min(max(score, 0), 100)
+
+    # Stress level + suggestions
+    if score < 35:
         level = "Low"
-    elif stress_score < 70:
+        suggestions = [
+            "Maintain regular sleep of 7–8 hours.",
+            "Keep exercising at least 3–4 times a week.",
+            "Balance screen time with offline activities.",
+            "Continue mindful practices like meditation or journaling."
+        ]
+    elif score < 70:
         level = "Medium"
+        suggestions = [
+            "Improve diet: add fruits, vegetables, and hydration.",
+            "Take short breaks between long work/study sessions.",
+            "Reduce caffeine and increase physical activity.",
+            "Practice relaxation (deep breathing, yoga, meditation)."
+        ]
     else:
         level = "High"
+        suggestions = [
+            "Prioritize sleep and cut down late-night screen time.",
+            "Seek support from friends, family, or a counselor.",
+            "Reduce workload or break tasks into smaller parts.",
+            "Adopt stress-relieving habits like daily walks or mindfulness."
+        ]
 
-    return level, stress_score
+    return level, score, suggestions
