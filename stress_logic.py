@@ -1,41 +1,21 @@
 # stress_logic.py
+def calculate_stress(sleep_hours, work_hours, exercise_hours):
+    """
+    Simple logic to calculate stress score (0–100).
+    Lower sleep, higher work, less exercise → higher stress.
+    """
 
-def calculate_stress(sleep_hours, study_hours, pending_subjects):
-    score = 0
+    stress_score = (10 - sleep_hours) * 5 + (work_hours * 3) - (exercise_hours * 2)
 
-    # Sleep factor
-    if sleep_hours < 6:
-        score += 2
-    elif 6 <= sleep_hours < 8:
-        score += 1
+    # Keep score between 0 and 100
+    stress_score = max(0, min(100, stress_score))
 
-    # Study factor
-    if study_hours > 8:
-        score += 2
-    elif 5 <= study_hours <= 8:
-        score += 1
-
-    # Pending subjects factor
-    if pending_subjects >= 5:
-        score += 2
-    elif 2 <= pending_subjects < 5:
-        score += 1
-
-    # Stress Level
-    if score <= 2:
-        level = "LOW"
-    elif 3 <= score <= 4:
-        level = "MEDIUM"
+    # Categories
+    if stress_score < 40:
+        level = "Low"
+    elif stress_score < 70:
+        level = "Medium"
     else:
-        level = "HIGH"
+        level = "High"
 
-    return level, score
-
-
-def give_advice(level):
-    if level == "LOW":
-        return "Great! Keep balancing sleep, study and relaxation. 🌸"
-    elif level == "MEDIUM":
-        return "You’re doing okay. Try sleeping 7-8 hours and revise with Pomodoro technique. ⏳"
-    else:
-        return "⚠️ You're stressed! Sleep more, take breaks, and divide subjects into small goals. 💡"
+    return level, stress_score
